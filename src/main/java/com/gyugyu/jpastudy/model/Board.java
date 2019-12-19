@@ -14,7 +14,6 @@ public class Board {
 
     private String title;
 
-
     public Long getId() {
         return id;
     }
