@@ -28,11 +28,7 @@ public class JpaMain {
 
             tx.begin(); //트랜잭션 시작
 //            logic(em);  //비즈니스 로직
-            testSave(em);
-//            queryLogicJoin(em);
-//            updateRelation(em);
-//            deleteRelation(em);
-            biDirection(em);
+            testSaveNonOwner(em);
             tx.commit();//트랜잭션 커밋
 
 
@@ -139,5 +135,29 @@ public class JpaMain {
             System.out.println("member.username = " + member.getUsername());
         }
     }
+
+    private static void testSaveNonOwner(EntityManager em) {
+        // 회원1 저장
+        Member member1 = new Member();
+        member1.setId("member1");
+        member1.setUsername("회원1");
+        em.persist(member1);
+
+        // 회원2 저장
+        Member member2 = new Member();
+        member2.setId("member2");
+        member2.setUsername("회원2");
+        em.persist(member2);
+
+        Team team1 = new Team();
+        team1.setId("team1");
+        team1.setName("팀1");
+
+        // 주인이 아닌 곳만 연관관계 설정
+        team1.getMembers().add(member1);
+        team1.getMembers().add(member2);
+    }
+
+
 
 }
