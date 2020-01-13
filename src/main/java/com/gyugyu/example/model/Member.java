@@ -12,10 +12,10 @@ import java.util.List;
 
 @Entity
 @Data
-public class User {
+public class Member {
 
     @Id @GeneratedValue // default: AUTO
-    @Column(name = "USER_ID")
+    @Column(name = "MEMBER_ID")
     private Long id;
 
     private String name;
@@ -24,7 +24,7 @@ public class User {
     private String street;
     private String zipcode;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
 
 }

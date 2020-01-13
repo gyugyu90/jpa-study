@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,11 +29,15 @@ public class Order {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID")
-    private User user; // 주문 회원
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member; // 주문 회원
 
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems = new ArrayList<>();
+
+    @OneToOne
+    @JoinColumn(name = "DELIVERY_ID")
+    private Delivery delivery;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate; // 주문 날짜
@@ -41,13 +46,14 @@ public class Order {
     private OrderStatus status; // 주문 상태
 
     // 연관관계 메소드
-    public void setUser(User user) {
-        if(this.user != null) {
-            this.user.getOrders().remove(this);
+    public void setMember(Member member) {
+        // 기존 관계 제거
+        if(this.member != null) {
+            this.member.getOrders().remove(this);
         }
 
-        this.user = user;
-        user.getOrders().add(this);
+        this.member = member;
+        member.getOrders().add(this);
     }
 
     public void addOrderItem(OrderItem orderItem) {
